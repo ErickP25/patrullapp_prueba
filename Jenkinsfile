@@ -1,10 +1,6 @@
 pipeline {
     agent any
 
-    tools {
-        python 'Python3'
-    }
-
     environment {
         GIT_CREDENTIALS = credentials('github-token')
     }
@@ -34,17 +30,13 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                bat '''
-                    pytest
-                '''
+                bat 'pytest'
             }
         }
 
         stage('Run App') {
             steps {
-                bat '''
-                    python main.py
-                '''
+                bat 'python main.py'
             }
         }
     }
