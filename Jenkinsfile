@@ -1,8 +1,9 @@
 pipeline {
     agent any
 
-    tools {
-        python 'Python3'   
+    environment {
+        PYTHONHOME = "C:/Users/conie/AppData/Local/Programs/Python/Python313"
+        PATH = "${env.PYTHONHOME};${env.PYTHONHOME}/Scripts;${env.PATH}"
     }
 
     stages {
@@ -34,7 +35,7 @@ pipeline {
             }
             steps {
                 sh """
-                    echo "Ejecutando pruebas (si existen)..."
+                    echo "Ejecutando pruebas..."
                     pytest || true
                 """
             }
