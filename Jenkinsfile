@@ -1,52 +1,50 @@
 pipeline {
     agent any
 
+    tools {
+        python 'Python3'
+    }
+
     environment {
-        PYTHONHOME = "C:/Users/conie/AppData/Local/Programs/Python/Python313"
-        PATH = "${env.PYTHONHOME};${env.PYTHONHOME}/Scripts;${env.PATH}"
+        GIT_CREDENTIALS = credentials('github-token')
     }
 
     stages {
-
         stage('Checkout') {
             steps {
-                checkout scm
+                checkout([$class: 'GitSCM',
+                    branches: [[name: '*/main']],
+                    userRemoteConfigs: [[
+                        url: 'https://github.com/ErickP25/patrullapp_prueba.git',
+                        credentialsId: 'github-token'
+                    ]]
+                ])
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                sh """
-                    echo "Verificando versión de Python..."
+                bat '''
                     python --version
-                    
-                    echo "Actualizando pip..."
                     pip install --upgrade pip
-                    
-                    echo "Instalando dependencias..."
                     pip install -r requirements.txt
-                """
+                '''
             }
         }
 
         stage('Run Tests') {
-            when {
-                expression { fileExists('tests') }
-            }
             steps {
-                sh """
-                    echo "Ejecutando pruebas..."
-                    pytest || true
-                """
+                bat '''
+                    pytest
+                '''
             }
         }
 
         stage('Run App') {
             steps {
-                sh """
-                    echo "Levantando Flask..."
-                    python app.py
-                """
+                bat '''
+                    python main.py
+                '''
             }
         }
     }
