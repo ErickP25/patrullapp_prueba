@@ -1,0 +1,6 @@
+<project version="4">
+  <component name="Black">
+    <option name="sdkName" value="PatrullAPPenv" />
+  </component>
+  <component name="ProjectRootManager" version="2" project-jdk-name="PatrullAPPenv" project-jdk-type="Python SDK" />
+</project>
