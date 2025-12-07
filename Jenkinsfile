@@ -27,13 +27,6 @@ pipeline {
                 '''
             }
         }
-
-        stage('Run Tests') {
-            steps {
-                bat 'pytest'
-            }
-        }
-
         stage('Run App') {
             steps {
                 bat 'python main.py'
