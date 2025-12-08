@@ -40,6 +40,9 @@ pipeline {
                     echo ===== Iniciando Flask en background =====
                     start "" /B python app.py > flask.log 2>&1
 
+                    echo ===== Esperando que Flask genere logs =====
+                    ping 127.0.0.1 -n 5 > nul
+
                     echo ===== LOGS DE FLASK =====
                     type flask.log
                 '''
