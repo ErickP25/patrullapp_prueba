@@ -6,6 +6,7 @@ pipeline {
     }
 
     stages {
+
         stage('Checkout') {
             steps {
                 checkout([$class: 'GitSCM',
@@ -21,15 +22,27 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 bat '''
+                    echo ===== Verificando Python =====
                     python --version
-                    pip install --upgrade pip
+
+                    echo ===== Actualizando pip =====
+                    python -m pip install --upgrade pip
+
+                    echo ===== Instalando dependencias =====
                     pip install -r requirement.txt
                 '''
             }
         }
+
         stage('Run App') {
             steps {
-                bat 'start /B python app.py'
+                bat '''
+                    echo ===== Iniciando Flask en background =====
+                    start "" /B python app.py > flask.log 2>&1
+
+                    echo ===== LOGS DE FLASK =====
+                    type flask.log
+                '''
             }
         }
     }
